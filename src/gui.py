@@ -4,9 +4,11 @@ from memory.save_data_slot import SaveDataSlotMemory
 from memory.pointer import DeepPointer
 
 TESLAGRAD_2_PROCESS_NAME = "Teslagrad 2"
+MODULE_NAME = "GameAssembly.dll"
 
 process_handle = pymem.Pymem(TESLAGRAD_2_PROCESS_NAME).process_handle
-save_data_slot_memory = SaveDataSlotMemory(DeepPointer(0x7FFF83F00000, 0x3199E90, 0xB8, 0x10), process_handle)
+module_adress = pymem.process.module_from_name(process_handle, MODULE_NAME).lpBaseOfDll
+save_data_slot_memory = SaveDataSlotMemory(DeepPointer(module_adress, 0x3199E90, 0xB8, 0x10), process_handle)
 
 def quicksave_event():
     global data
