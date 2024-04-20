@@ -1,17 +1,21 @@
 import tkinter as tk
-from save_data_manipulation import Teslagrad2
+import pymem
+from memory.save_data_slot import SaveDataSlotMemory
+from memory.pointer import DeepPointer
 
+TESLAGRAD_2_PROCESS_NAME = "Teslagrad 2"
 
-teslagrad = Teslagrad2()
+process_handle = pymem.Pymem(TESLAGRAD_2_PROCESS_NAME).process_handle
+save_data_slot_memory = SaveDataSlotMemory(DeepPointer(0x7FFF83F00000, 0x3199E90, 0xB8, 0x10), process_handle)
 
 def quicksave_event():
     global data
-    data = teslagrad.get_save_data()
+    data = save_data_slot_memory.read()
     print(data)
 
 def quickload_event():
     global data
-    teslagrad.write_save_data(data)
+    save_data_slot_memory.write(data)
 
 # Create the main window
 root = tk.Tk()
