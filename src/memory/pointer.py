@@ -1,8 +1,21 @@
 
 from __future__ import annotations
 
-from pymem.memory import read_ctype, read_short, read_int, read_bytes, write_bytes, write_short, write_int
 from ctypes import c_void_p
+
+from pymem.memory import (
+    free_memory,
+    read_bytes,
+    read_ctype,
+    read_int,
+    read_short,
+    read_longlong,
+    write_bytes,
+    write_int,
+    write_longlong,
+    write_short,
+)
+
 
 class DeepPointer():
     def __init__(self, base_adress, *offsets) -> None:
@@ -33,6 +46,9 @@ class DeepPointer():
     def read_bytes(self, handle, bytes) -> bytes:
         return read_bytes(handle, self.deref_last_pointer(handle).base_adress, bytes)
     
+    def read_longlong(self, handle) -> bytes:
+        return read_longlong(handle, self.deref_last_pointer(handle).base_adress)   
+    
     def write_short(self, handle, value):
         write_short(handle, self.deref_last_pointer(handle).base_adress, value)
 
@@ -41,3 +57,12 @@ class DeepPointer():
 
     def write_bytes(self, handle, value, bytes):
         write_bytes(handle, self.deref_last_pointer(handle).base_adress, value, bytes)
+
+    def write_longlong(self, handle, value):
+        write_longlong(handle, self.deref_last_pointer(handle).base_adress, value)
+
+    def free(self, handle):
+        # return_value = free_memory(handle, self.deref_last_pointer(handle).base_adress)
+        # if return_value == 0:
+        #     print("Free Memory Failed !")
+        pass
